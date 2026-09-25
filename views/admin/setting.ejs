@@ -1,0 +1,77 @@
+<%- include('../partials/header') %> <%- include('../partials/navbar') %>
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Settings</h1>
+      <p>Manage portal configuration and administrator preferences.</p>
+    </div>
+    <button class="btn-primary" id="saveSettings">Save Changes</button>
+  </div>
+  <div class="settings-layout">
+    <div class="settings-menu">
+      <button class="active">General</button><button>Admission</button
+      ><button>Notifications</button><button>Security</button>
+    </div>
+    <section class="settings-content">
+      <h2>General Settings</h2>
+      <p>Basic information used throughout the admission portal.</p>
+      <form id="settingsForm">
+        <div class="grid">
+          <div class="field">
+            <label>Institute Name</label
+            ><input name="institute_name" value="Student Admission Portal" />
+          </div>
+          <div class="field">
+            <label>Academic Session</label
+            ><select name="session">
+              <option>2026-27</option>
+              <option>2027-28</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Contact Email</label
+            ><input type="email" name="email" value="apex5759@gmail.com" />
+          </div>
+          <div class="field">
+            <label>Contact Phone</label
+            ><input name="phone" value="6387708599" />
+          </div>
+          <div class="field full">
+            <label>Institute Address</label><textarea name="address"></textarea>
+          </div>
+        </div>
+      </form>
+      <div style="margin-top: 25px">
+        <h2>Portal Preferences</h2>
+        <div class="toggle-row">
+          <div>
+            <strong>Email Notifications</strong>
+            <p class="muted">
+              Send email notifications for application updates.
+            </p>
+          </div>
+          <button class="toggle on"></button>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <strong>Auto Application Number</strong>
+            <p class="muted">
+              Generate unique application numbers automatically.
+            </p>
+          </div>
+          <button class="toggle on"></button>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <strong>Maintenance Mode</strong>
+            <p class="muted">
+              Temporarily restrict portal access for maintenance.
+            </p>
+          </div>
+          <button class="toggle"></button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<%- include('../partials/footer') %>

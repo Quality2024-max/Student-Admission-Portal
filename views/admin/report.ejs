@@ -1,0 +1,63 @@
+<%- include('../partials/header') %> <%- include('../partials/navbar') %>
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Reports</h1>
+      <p>Generate and export admission, student and fee reports.</p>
+    </div>
+  </div>
+  <section class="card" style="padding: 20px; margin-bottom: 18px">
+    <div class="grid">
+      <div class="field">
+        <label>From Date</label><input type="date" id="fromDate" />
+      </div>
+      <div class="field">
+        <label>To Date</label><input type="date" id="toDate" />
+      </div>
+      <div class="field">
+        <label>Course</label
+        ><select>
+          <option>All Courses</option>
+          <option>MCA</option>
+          <option>BCA</option>
+          <option>MBA</option>
+          <option>B.Tech</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Session</label
+        ><select>
+          <option>2026-27</option>
+          <option>2027-28</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  <div class="report-grid">
+    <div class="report-card">
+      <h3>Student Report</h3>
+      <p><%= counts.students || 0 %> students on record.</p>
+      <a class="btn-primary" href="/admin/student">View Report</a>
+    </div>
+    <div class="report-card">
+      <h3>Admission Report</h3>
+      <p><%= counts.admissions || 0 %> confirmed admissions.</p>
+      <a class="btn-primary" href="/admin/admission">View Report</a>
+    </div>
+    <div class="report-card">
+      <h3>Application Report</h3>
+      <p><%= counts.applications || 0 %> applications received.</p>
+      <a class="btn-primary" href="/admin/application">View Report</a>
+    </div>
+    <div class="report-card">
+      <h3>Fee Report</h3>
+      <p>
+        ₹<%= Number(counts.totalCollected || 0).toLocaleString('en-IN') %>
+        collected, ₹<%= Number(counts.totalDue || 0).toLocaleString('en-IN') %>
+        due.
+      </p>
+      <a class="btn-primary" href="/admin/fees">View Report</a>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>

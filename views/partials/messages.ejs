@@ -1,0 +1,247 @@
+
+<!-- =================================
+     FLASH MESSAGES
+================================== -->
+
+<div class="flash-container" id="flashContainer">
+
+    <!-- =================================
+         SUCCESS
+    ================================== -->
+
+    <% if (
+        typeof messages !== 'undefined' &&
+        messages.success &&
+        messages.success.length > 0
+    ) { %>
+
+        <div class="flash-message success">
+
+            <div class="flash-icon">
+                ✓
+            </div>
+
+            <div class="flash-content">
+
+                <strong>Success!</strong>
+
+                <span>
+                    <%= messages.success[0] %>
+                </span>
+
+            </div>
+
+            <button
+                class="flash-close"
+                type="button"
+                aria-label="Close notification"
+            >
+                &times;
+            </button>
+
+            <div class="flash-progress"></div>
+
+        </div>
+
+    <% } %>
+
+
+    <!-- =================================
+         ERROR
+    ================================== -->
+
+    <% if (
+        typeof messages !== 'undefined' &&
+        messages.error &&
+        messages.error.length > 0
+    ) { %>
+
+        <div class="flash-message error">
+
+            <div class="flash-icon">
+                !
+            </div>
+
+            <div class="flash-content">
+
+                <strong>Error!</strong>
+
+                <span>
+                    <%= messages.error[0] %>
+                </span>
+
+            </div>
+
+            <button
+                class="flash-close"
+                type="button"
+                aria-label="Close notification"
+            >
+                &times;
+            </button>
+
+            <div class="flash-progress"></div>
+
+        </div>
+
+    <% } %>
+
+
+    <!-- =================================
+         WARNING
+    ================================== -->
+
+    <% if (
+        typeof messages !== 'undefined' &&
+        messages.warning &&
+        messages.warning.length > 0
+    ) { %>
+
+        <div class="flash-message warning">
+
+            <div class="flash-icon">
+                !
+            </div>
+
+            <div class="flash-content">
+
+                <strong>Warning!</strong>
+
+                <span>
+                    <%= messages.warning[0] %>
+                </span>
+
+            </div>
+
+            <button
+                class="flash-close"
+                type="button"
+                aria-label="Close notification"
+            >
+                &times;
+            </button>
+
+            <div class="flash-progress"></div>
+
+        </div>
+
+    <% } %>
+
+
+    <!-- =================================
+         INFO
+    ================================== -->
+
+    <% if (
+        typeof messages !== 'undefined' &&
+        messages.info &&
+        messages.info.length > 0
+    ) { %>
+
+        <div class="flash-message info">
+
+            <div class="flash-icon">
+                i
+            </div>
+
+            <div class="flash-content">
+
+                <strong>Information</strong>
+
+                <span>
+                    <%= messages.info[0] %>
+                </span>
+
+            </div>
+
+            <button
+                class="flash-close"
+                type="button"
+                aria-label="Close notification"
+            >
+                &times;
+            </button>
+
+            <div class="flash-progress"></div>
+
+        </div>
+
+    <% } %>
+
+</div>
+
+
+
+
+
+<script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const messages =
+                document.querySelectorAll(".flash-message");
+
+
+            messages.forEach((message1) => {
+
+
+                /* ==========================
+                   CLOSE BUTTON
+                ========================== */
+
+                const closeButton =
+                    message1.querySelector(".flash-close");
+
+
+                closeButton.addEventListener("click", () => {
+
+                    removeMessage(message1);
+
+                });
+
+
+                /* ==========================
+                   AUTO HIDE - 10 SECONDS
+                ========================== */
+
+                setTimeout(() => {
+
+                    removeMessage(message1);
+
+                }, 5000);
+
+            });
+
+
+            /* ==========================
+               REMOVE MESSAGE
+            ========================== */
+
+            function removeMessage(message1) {
+
+                if (
+                    !message1 ||
+                    message1.classList.contains("removing")
+                ) {
+                    return;
+                }
+
+
+                message1.classList.add("removing");
+
+
+                message1.style.animation =
+                    "slideOut 0.4s ease forwards";
+
+
+                setTimeout(() => {
+
+                    message1.remove();
+
+                }, 400);
+
+            }
+
+        });
+
+    </script>

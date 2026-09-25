@@ -1,0 +1,381 @@
+/* ============ RESET & BASE ============ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f4f6fb;
+  color: #1f2937;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ============ TOP HEADER ============ */
+.top-header {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.mobile-menu {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 16px;
+}
+.brand-icon {
+  font-size: 20px;
+}
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.profile-icon {
+  font-size: 18px;
+}
+
+/* ============ LAYOUT ============ */
+.main {
+  margin-left: 240px;
+  padding: 24px;
+  min-height: calc(100vh - 60px);
+}
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.page-header h1 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.page-header p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+}
+.muted {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* ============ BUTTONS ============ */
+.btn-primary,
+.btn-secondary {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary {
+  background: #4f46e5;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #4338ca;
+}
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+/* ============ TOOLBAR ============ */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  border-bottom: 1px solid #f0f1f5;
+  flex-wrap: wrap;
+}
+.search input {
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-width: 240px;
+}
+.toolbar select {
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+/* ============ TABLE ============ */
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6b7280;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0f1f5;
+  font-size: 14px;
+}
+tbody tr:hover {
+  background: #fafbff;
+}
+
+.student {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4338ca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.student-info {
+  display: flex;
+  flex-direction: column;
+}
+.student-name {
+  font-weight: 600;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.status.pending,
+.status.unpaid,
+.status.overdue {
+  background: #fef3c7;
+  color: #92400e;
+}
+.status.approved,
+.status.confirmed,
+.status.active,
+.status.active-status,
+.status.paid {
+  background: #d1fae5;
+  color: #065f46;
+}
+.status.rejected,
+.status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.status.partial,
+.status.on.hold,
+.status.hold {
+  background: #fef3c7;
+  color: #92400e;
+}
+.status.graduated {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+.action {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.action:hover {
+  background: #f3f4f6;
+}
+.action.delete:hover {
+  background: #fee2e2;
+}
+.action.approve:hover {
+  background: #d1fae5;
+}
+.action.reject:hover {
+  background: #fee2e2;
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+.pages {
+  display: flex;
+  gap: 6px;
+}
+.page {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.page.active {
+  background: #4f46e5;
+  color: #fff;
+  border-color: #4f46e5;
+}
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid #f0f1f5;
+}
+.modal-head h2 {
+  font-size: 18px;
+}
+.close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #6b7280;
+}
+.modal-body {
+  padding: 20px;
+}
+.modal-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f1f5;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.section-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* ============ FORMS ============ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field.full {
+  grid-column: 1 / -1;
+}
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+.field input,
+.field select,
+.field textarea {
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+.field textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .mobile-menu {
+    display: inline-block;
+  }
+  .main {
+    margin-left: 0;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

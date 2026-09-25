@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>404 | Page Not Found</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* =========================================
+   RESET
+========================================= */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+
+        font-family: "Inter", sans-serif;
+
+        color: #111827;
+
+        background: #f8fafc;
+      }
+
+      /* =========================================
+   MAIN PAGE
+========================================= */
+
+      .error-page {
+        position: relative;
+
+        min-height: 100vh;
+
+        display: flex;
+
+        flex-direction: column;
+
+        overflow: hidden;
+
+        background:
+          radial-gradient(
+            circle at 50% 40%,
+            rgba(99, 102, 241, 0.08),
+            transparent 35%
+          ),
+          #f8fafc;
+      }
+
+      /* =========================================
+   DECORATIVE CIRCLES
+========================================= */
+
+      .circle {
+        position: absolute;
+
+        border-radius: 50%;
+
+        pointer-events: none;
+
+        border: 1px solid rgba(99, 102, 241, 0.08);
+      }
+
+      .circle-one {
+        width: 420px;
+        height: 420px;
+
+        top: -230px;
+        left: -180px;
+      }
+
+      .circle-two {
+        width: 600px;
+        height: 600px;
+
+        right: -320px;
+        bottom: -320px;
+      }
+
+      .circle-three {
+        width: 250px;
+        height: 250px;
+
+        top: 20%;
+        right: 12%;
+
+        border-color: rgba(124, 58, 237, 0.06);
+      }
+
+      /* =========================================
+   HEADER
+========================================= */
+
+      .error-header {
+        position: relative;
+
+        z-index: 5;
+
+        padding: 35px 6%;
+      }
+
+      /* =========================================
+   BRAND
+========================================= */
+
+      .brand {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        color: #111827;
+
+        font-size: 21px;
+
+        font-weight: 800;
+
+        text-decoration: none;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        color: white;
+
+        font-size: 21px;
+
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+      }
+
+      /* =========================================
+   CONTENT
+========================================= */
+
+      .error-content {
+        position: relative;
+
+        z-index: 2;
+
+        width: 100%;
+
+        max-width: 750px;
+
+        margin: auto;
+
+        padding: 30px 20px;
+
+        text-align: center;
+      }
+
+      /* =========================================
+   404 NUMBER
+========================================= */
+
+      .error-number {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        margin-bottom: 20px;
+
+        color: #111827;
+
+        font-size: clamp(110px, 18vw, 210px);
+
+        font-weight: 800;
+
+        line-height: 0.8;
+
+        letter-spacing: -15px;
+
+        user-select: none;
+      }
+
+      /* =========================================
+   ZERO
+========================================= */
+
+      .zero {
+        width: clamp(110px, 15vw, 175px);
+        height: clamp(110px, 15vw, 175px);
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+
+        box-shadow: 0 25px 60px rgba(79, 70, 229, 0.25);
+
+        transform: rotate(-8deg);
+
+        letter-spacing: 0;
+      }
+
+      .zero-inner {
+        width: 45%;
+        height: 45%;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: #f8fafc;
+
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.04);
+      }
+
+      .zero-inner span {
+        color: #6366f1;
+
+        font-size: clamp(30px, 5vw, 55px);
+
+        font-weight: 800;
+
+        transform: rotate(8deg);
+      }
+
+      /* =========================================
+   BADGE
+========================================= */
+
+      .error-badge {
+        display: inline-block;
+
+        padding: 8px 15px;
+
+        border: 1px solid #e0e7ff;
+
+        border-radius: 30px;
+
+        color: #4f46e5;
+
+        background: #eef2ff;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 1.5px;
+      }
+
+      /* =========================================
+   HEADING
+========================================= */
+
+      .error-content h1 {
+        margin-top: 20px;
+
+        color: #111827;
+
+        font-size: clamp(30px, 4vw, 45px);
+
+        font-weight: 800;
+
+        letter-spacing: -1.5px;
+      }
+
+      /* =========================================
+   DESCRIPTION
+========================================= */
+
+      .error-content > p {
+        max-width: 560px;
+
+        margin: 15px auto 0;
+
+        color: #6b7280;
+
+        font-size: 15px;
+
+        line-height: 1.8;
+      }
+
+      /* =========================================
+   BUTTONS
+========================================= */
+
+      .error-actions {
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-top: 30px;
+      }
+
+      .home-btn,
+      .back-btn {
+        height: 50px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 0 22px;
+
+        border-radius: 11px;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
+      }
+
+      /* Home */
+
+      .home-btn {
+        gap: 10px;
+
+        color: white;
+
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+
+        text-decoration: none;
+
+        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.22);
+      }
+
+      .home-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
+      }
+
+      .home-btn span {
+        font-size: 18px;
+      }
+
+      /* Back */
+
+      .back-btn {
+        border: 1px solid #e5e7eb;
+
+        color: #374151;
+
+        background: white;
+      }
+
+      .back-btn:hover {
+        transform: translateY(-2px);
+
+        background: #f9fafb;
+
+        border-color: #d1d5db;
+      }
+
+      /* =========================================
+   HELP
+========================================= */
+
+      .help-text {
+        margin-top: 22px;
+
+        color: #9ca3af;
+
+        font-size: 12px;
+      }
+
+      .help-text span {
+        margin-right: 4px;
+      }
+
+      .help-text a {
+        color: #4f46e5;
+
+        font-weight: 600;
+
+        text-decoration: none;
+      }
+
+      .help-text a:hover {
+        text-decoration: underline;
+      }
+
+      /* =========================================
+   FOOTER
+========================================= */
+
+      .error-footer {
+        position: relative;
+
+        z-index: 5;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        padding: 25px 6%;
+
+        color: #9ca3af;
+
+        font-size: 11px;
+      }
+
+      .footer-links {
+        display: flex;
+
+        gap: 20px;
+      }
+
+      .footer-links a {
+        color: #6b7280;
+
+        text-decoration: none;
+
+        transition: 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: #4f46e5;
+      }
+
+      /* =========================================
+   RESPONSIVE
+========================================= */
+
+      @media (max-width: 650px) {
+        .error-header {
+          padding: 25px 20px;
+        }
+
+        .error-content {
+          padding: 20px;
+        }
+
+        .error-number {
+          gap: 5px;
+
+          letter-spacing: -8px;
+        }
+
+        .error-content h1 {
+          font-size: 30px;
+        }
+
+        .error-content > p {
+          font-size: 13px;
+        }
+
+        .error-actions {
+          flex-direction: column;
+
+          width: 100%;
+        }
+
+        .home-btn,
+        .back-btn {
+          width: 100%;
+
+          max-width: 280px;
+        }
+
+        .error-footer {
+          flex-direction: column;
+
+          justify-content: center;
+
+          text-align: center;
+
+          padding-bottom: 20px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .brand {
+          font-size: 18px;
+        }
+
+        .brand-logo {
+          width: 38px;
+          height: 38px;
+        }
+
+        .error-content h1 {
+          font-size: 27px;
+        }
+
+        .error-number {
+          margin-bottom: 15px;
+        }
+
+        .error-badge {
+          font-size: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="error-page">
+      <!-- Decorative Background -->
+      <div class="circle circle-one"></div>
+      <div class="circle circle-two"></div>
+      <div class="circle circle-three"></div>
+
+      <!-- Header -->
+      <header class="error-header">
+        <a href="/" class="brand">
+          <div class="brand-logo">S</div>
+
+          <span>SAP</span>
+        </a>
+      </header>
+
+      <!-- Content -->
+      <section class="error-content">
+        <div class="error-number">
+          <span>4</span>
+
+          <div class="zero">
+            <div class="zero-inner">
+              <span>?</span>
+            </div>
+          </div>
+
+          <span>4</span>
+        </div>
+
+        <div class="error-badge">ERROR 404</div>
+
+        <h1>Page Not Found</h1>
+
+        <p>
+          Sorry, we couldn't find the page you're looking for. The page may have
+          been moved, deleted, or the URL might be incorrect.
+        </p>
+
+        <div class="error-actions">
+          <a href="/" class="home-btn">
+            <span>←</span>
+            Back to Home
+          </a>
+
+          <button onclick="history.back()" class="back-btn">Go Back</button>
+        </div>
+
+        <div class="help-text">
+          <span>Need help?</span>
+
+          <a href="/contact"> Contact Support </a>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="error-footer">
+        <span> © 2026 YourApp. All rights reserved. </span>
+
+        <div class="footer-links">
+          <a href="/privacy"> Privacy </a>
+
+          <a href="/terms"> Terms </a>
+
+          <a href="/contact"> Contact </a>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

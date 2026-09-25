@@ -1,0 +1,284 @@
+<%- include('../partials/header') %> <%- include('../partials/navbar') %>
+
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Fees</h1>
+      <p>Manage fee payments, dues and receipts.</p>
+    </div>
+    <button class="btn-primary" data-modal="feeModal">+ Record Payment</button>
+  </div>
+
+  <section class="card">
+    <div class="toolbar">
+      <div><strong>Pending Dues</strong></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Due</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if ((pendingDues && pendingDues.length > 0) || (noRecordStudents && noRecordStudents.length > 0)) { %>
+            <% (pendingDues || []).forEach(due => { %>
+              <tr>
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= due.student_name.substring(0, 2).toUpperCase() %></div>
+                    <div class="student-info">
+                      <span class="student-name"><%= due.student_name %></span>
+                      <span class="muted"><%= due.student_roll %></span>
+                    </div>
+                  </div>
+                </td>
+                <td><%= due.student_course %></td>
+                <td>₹<%= Number(due.total).toLocaleString('en-IN') %></td>
+                <td>₹<%= Number(due.paid).toLocaleString('en-IN') %></td>
+                <td>₹<%= Number(due.due).toLocaleString('en-IN') %></td>
+                <td><span class="status <%= due.fee_status.toLowerCase() %>"><%= due.fee_status %></span></td>
+                <td>
+                  <div class="actions">
+                    <button class="action approve" title="Pay" data-modal="payDue-<%= due.student_id %>">💰</button>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+            <% (noRecordStudents || []).forEach(s => { %>
+              <tr>
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= s.student_name.substring(0, 2).toUpperCase() %></div>
+                    <div class="student-info">
+                      <span class="student-name"><%= s.student_name %></span>
+                      <span class="muted"><%= s.student_roll %></span>
+                    </div>
+                  </div>
+                </td>
+                <td><%= s.student_course %></td>
+                <td colspan="3" class="muted">No payment made yet</td>
+                <td><span class="status unpaid">Unpaid</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="action approve" title="Pay" data-modal="payNew-<%= s.student_id %>">💰</button>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="7" style="text-align:center;">No pending dues 🎉</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="toolbar">
+      <div><strong>Payment History</strong></div>
+      <div class="search">
+        <input id="tableSearch" placeholder="Search student, transaction no..." />
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Receipt No.</th>
+            <th>Student</th>
+            <th>Amount Paid</th>
+            <th>Total / Due</th>
+            <th>Mode</th>
+            <th>Paid On</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="dataTable">
+          <% if (payments && payments.length > 0) { %>
+            <% payments.forEach(payment => { %>
+              <tr>
+                <td>REC-<%= payment.id %></td>
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= payment.student_name.substring(0, 2).toUpperCase() %></div>
+                    <div class="student-info">
+                      <span class="student-name"><%= payment.student_name %></span>
+                      <span class="muted"><%= payment.student_roll %></span>
+                    </div>
+                  </div>
+                </td>
+                <td>₹<%= Number(payment.amount).toLocaleString('en-IN') %></td>
+                <td>₹<%= Number(payment.total).toLocaleString('en-IN') %> / ₹<%= Number(payment.due).toLocaleString('en-IN') %></td>
+                <td><%= payment.mode %></td>
+                <td>
+                  <%= new Date(payment.paid_on).toLocaleDateString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                  }) %>
+                </td>
+                <td><span class="status <%= payment.fee_status.toLowerCase() %>"><%= payment.fee_status %></span></td>
+                <td>
+                  <div class="actions">
+                    <form class="delete-form" action="/admin/fees/<%= payment.id %>" method="POST" style="display:inline;">
+                      <input type="hidden" name="_method" value="DELETE" />
+                      <button class="action delete" title="Delete">🗑</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="8" style="text-align:center;">No payments found</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-row">
+      <span>Showing <%= payments ? payments.length : 0 %> payments</span>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== RECORD PAYMENT MODAL ===================== -->
+<div class="modal-overlay" id="feeModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Record Payment</h2>
+      <button class="close">×</button>
+    </div>
+    <form action="/admin/fees" method="POST">
+      <div class="modal-body">
+        <div class="section-title">Payment Information</div>
+        <div class="grid">
+          <div class="field full">
+            <label>Student *</label>
+            <select name="student_id" required>
+              <option value="">Select student</option>
+              <% (students || []).forEach(s => { %>
+                <option value="<%= s.id %>"><%= s.roll %> - <%= s.name %> (<%= s.course %>)</option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="field">
+            <label>Total Course Fee *</label>
+            <input type="number" name="total" min="0" step="0.01" required placeholder="Only needed for first payment" />
+          </div>
+          <div class="field">
+            <label>Amount Paying Now *</label>
+            <input type="number" name="amount" min="0" step="0.01" required />
+          </div>
+          <div class="field">
+            <label>Payment Mode *</label>
+            <select name="mode" required>
+              <option>Cash</option>
+              <option>UPI</option>
+              <option>Card</option>
+              <option>Bank Transfer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Transaction No.</label><input name="transaction_no" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+        <button class="btn-primary">Save Payment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============== PAY MODALS: students with an existing due ============== -->
+<% (pendingDues || []).forEach(due => { %>
+  <div class="modal-overlay" id="payDue-<%= due.student_id %>">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Pay Fee - <%= due.student_name %> (<%= due.student_roll %>)</h2>
+        <button class="close">×</button>
+      </div>
+      <form action="/admin/fees" method="POST">
+        <input type="hidden" name="student_id" value="<%= due.student_id %>" />
+        <input type="hidden" name="total" value="<%= due.total %>" />
+        <div class="modal-body">
+          <div class="section-title">Due: ₹<%= Number(due.due).toLocaleString('en-IN') %> of ₹<%= Number(due.total).toLocaleString('en-IN') %></div>
+          <div class="grid">
+            <div class="field">
+              <label>Amount Paying Now *</label>
+              <input type="number" name="amount" min="0" max="<%= due.due %>" step="0.01" required />
+            </div>
+            <div class="field">
+              <label>Payment Mode *</label>
+              <select name="mode" required>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Card</option>
+                <option>Bank Transfer</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Transaction No.</label><input name="transaction_no" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary close">Cancel</button>
+          <button class="btn-primary">Save Payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<% }) %>
+
+<!-- ============== PAY MODALS: students with no fee record yet ============== -->
+<% (noRecordStudents || []).forEach(s => { %>
+  <div class="modal-overlay" id="payNew-<%= s.student_id %>">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Pay Fee - <%= s.student_name %> (<%= s.student_roll %>)</h2>
+        <button class="close">×</button>
+      </div>
+      <form action="/admin/fees" method="POST">
+        <input type="hidden" name="student_id" value="<%= s.student_id %>" />
+        <div class="modal-body">
+          <div class="section-title">First payment for this student</div>
+          <div class="grid">
+            <div class="field">
+              <label>Total Course Fee *</label>
+              <input type="number" name="total" min="0" step="0.01" required />
+            </div>
+            <div class="field">
+              <label>Amount Paying Now *</label>
+              <input type="number" name="amount" min="0" step="0.01" required />
+            </div>
+            <div class="field">
+              <label>Payment Mode *</label>
+              <select name="mode" required>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Card</option>
+                <option>Bank Transfer</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Transaction No.</label><input name="transaction_no" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary close">Cancel</button>
+          <button class="btn-primary">Save Payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<% }) %>
+
+<%- include('../partials/footer') %>

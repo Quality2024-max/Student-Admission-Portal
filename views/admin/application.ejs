@@ -1,0 +1,217 @@
+<%- include('../partials/header') %> <%- include('../partials/navbar') %>
+
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Applications</h1>
+      <p>Review, approve and manage admission applications.</p>
+    </div>
+    <button class="btn-primary" data-modal="applicationModal">+ New Application</button>
+  </div>
+
+  <section class="card">
+    <div class="toolbar">
+      <div class="search">
+        <input id="tableSearch" placeholder="Search application number, applicant..." />
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Applicant</th>
+            <th>Course / Semester</th>
+            <th>Applied On</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="dataTable">
+          <% if (applications && applications.length > 0) { %>
+            <% applications.forEach(application => { %>
+              <tr>
+                <td><%= application.application_no %></td>
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= application.name.substring(0, 2).toUpperCase() %></div>
+                    <div class="student-info">
+                      <span class="student-name"><%= application.name %></span>
+                      <span class="muted"><%= application.email || '-' %></span>
+                    </div>
+                  </div>
+                </td>
+                <td><%= application.course %> <% if (application.semester) { %>/ <%= application.semester %><% } %></td>
+                <td>
+                  <%= application.applied_on ? new Date(application.applied_on).toLocaleDateString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                  }) : '-' %>
+                </td>
+                <td><span class="status <%= application.status.toLowerCase() %>"><%= application.status %></span></td>
+                <td>
+                  <div class="actions">
+                    <button class="action" title="Edit" data-modal="editApplication-<%= application.id %>">✏️</button>
+
+                    <% if (application.status === 'Pending') { %>
+                      <form action="/admin/application/<%= application.id %>/status" method="POST" style="display:inline;">
+                        <input type="hidden" name="_method" value="PATCH" />
+                        <input type="hidden" name="status" value="Approved" />
+                        <button class="action approve" title="Approve">✅</button>
+                      </form>
+                      <form action="/admin/application/<%= application.id %>/status" method="POST" style="display:inline;">
+                        <input type="hidden" name="_method" value="PATCH" />
+                        <input type="hidden" name="status" value="Rejected" />
+                        <button class="action reject" title="Reject">❌</button>
+                      </form>
+                    <% } %>
+
+                    <form class="delete-form" action="/admin/application/<%= application.id %>" method="POST" style="display:inline;">
+                      <input type="hidden" name="_method" value="DELETE" />
+                      <button class="action delete" title="Delete">🗑</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="6" style="text-align:center;">No applications found</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-row">
+      <span>Showing <%= applications ? applications.length : 0 %> applications</span>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== CREATE MODAL ===================== -->
+<div class="modal-overlay" id="applicationModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>New Application</h2>
+      <button class="close">×</button>
+    </div>
+    <form class="crud-form" action="/admin/application" method="POST">
+      <div class="modal-body">
+        <div class="section-title">Application Details</div>
+        <div class="grid">
+          <div class="field">
+            <label>Full Name *</label><input name="name" required />
+          </div>
+          <div class="field">
+            <label>Email</label><input type="email" name="email" />
+          </div>
+          <div class="field">
+            <label>Phone</label><input name="phone" maxlength="15" />
+          </div>
+          <div class="field">
+            <label>Date of Birth</label><input type="date" name="dob" />
+          </div>
+          <div class="field">
+            <label>Course *</label>
+            <select name="course" required>
+              <option value="">Select</option>
+              <option>MCA</option>
+              <option>BCA</option>
+              <option>MBA</option>
+              <option>B.Tech</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Semester</label>
+            <select name="semester">
+              <option value="">Select</option>
+              <option>Semester 1</option>
+              <option>Semester 2</option>
+              <option>Semester 3</option>
+              <option>Semester 4</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Qualification</label><input name="qualification" />
+          </div>
+          <div class="field">
+            <label>Score (%)</label><input type="number" step="0.01" min="0" max="100" name="score" />
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              <option>Pending</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+        <button class="btn-primary">Save Application</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== EDIT MODALS (one per row) ===================== -->
+<% if (applications && applications.length > 0) { %>
+  <% applications.forEach(application => { %>
+    <div class="modal-overlay" id="editApplication-<%= application.id %>">
+      <div class="modal">
+        <div class="modal-head">
+          <h2>Edit Application - <%= application.application_no %></h2>
+          <button class="close">×</button>
+        </div>
+        <form action="/admin/application/<%= application.id %>" method="POST">
+          <input type="hidden" name="_method" value="PUT" />
+          <div class="modal-body">
+            <div class="grid">
+              <div class="field">
+                <label>Full Name *</label><input name="name" value="<%= application.name %>" required />
+              </div>
+              <div class="field">
+                <label>Email</label><input type="email" name="email" value="<%= application.email || '' %>" />
+              </div>
+              <div class="field">
+                <label>Phone</label><input name="phone" value="<%= application.phone || '' %>" />
+              </div>
+              <div class="field">
+                <label>Date of Birth</label><input type="date" name="dob" value="<%= application.dob ? new Date(application.dob).toISOString().substring(0, 10) : '' %>" /> 
+              </div>
+              <div class="field">
+                <label>Course *</label>
+                <select name="course" required>
+                  <% ['MCA','BCA','MBA','B.Tech'].forEach(c => { %>
+                    <option <%= application.course === c ? 'selected' : '' %>><%= c %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="field">
+                <label>Semester</label><input name="semester" value="<%= application.semester || '' %>" />
+              </div>
+              <div class="field">
+                <label>Qualification</label><input name="qualification" value="<%= application.qualification || '' %>" />
+              </div>
+              <div class="field">
+                <label>Score (%)</label><input type="number" step="0.01" name="score" value="<%= application.score || '' %>" />
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <select name="status">
+                  <% ['Pending','Approved','Rejected'].forEach(s => { %>
+                    <option <%= application.status === s ? 'selected' : '' %>><%= s %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary close">Cancel</button>
+            <button class="btn-primary">Update Application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+<% } %>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,105 @@
+<%- include('../partials/header') %> <%- include('../partials/navbar') %>
+
+
+
+    <main class="main">
+    
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Overview of applications, admissions, students and fees.</p>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px;">
+    <div class="card" style="padding:18px;">
+      <p class="muted">Total Applications</p>
+      <h2><%= stats.totalApplications || 0 %></h2>
+      <p class="muted"><%= stats.pendingApplications || 0 %> pending</p>
+    </div>
+    <div class="card" style="padding:18px;">
+      <p class="muted">Approved Applications</p>
+      <h2><%= stats.approvedApplications || 0 %></h2>
+    </div>
+    <div class="card" style="padding:18px;">
+      <p class="muted">Total Admissions</p>
+      <h2><%= stats.totalAdmissions || 0 %></h2>
+    </div>
+    <div class="card" style="padding:18px;">
+      <p class="muted">Total Students</p>
+      <h2><%= stats.totalStudents || 0 %></h2>
+      <p class="muted"><%= stats.activeStudents || 0 %> active</p>
+    </div>
+    <div class="card" style="padding:18px;">
+      <p class="muted">Fees Collected</p>
+      <h2>₹<%= Number(stats.totalCollected || 0).toLocaleString('en-IN') %></h2>
+    </div>
+    <div class="card" style="padding:18px;">
+      <p class="muted">Fees Due</p>
+      <h2>₹<%= Number(stats.totalDue || 0).toLocaleString('en-IN') %></h2>
+    </div>
+  </div>
+
+      <!-- Recent Applications -->
+      <section class="card">
+        <div class="page-header" style="padding: 16px 16px 0">
+          <div>
+            <h1 style="font-size: 18px">Recent Applications</h1>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Application No.</th>
+                <th>Applicant</th>
+                <th>Course</th>
+                <th>Applied On</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% if(recentApplications && recentApplications.length > 0) { %>
+                <% recentApplications.forEach(application => { %>
+              <tr>
+                <td><%= application.application_no %></td>
+
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= application.name.substring(0,2).toUpperCase() %></div>
+
+                    <div class="student-info">
+                      <span class="student-name"><%= application.name %></span>
+
+                      <span class="muted"><%= application.email %></span>
+                    </div>
+                  </div>
+                </td>
+
+                <td><%= application.course %></td>
+
+                <td><%= new Date(application.applied_on).toLocaleDateString('en-IN',{
+                  day: '2-digit', month: 'short', year: 'numeric'
+                }) %></td>
+
+                <td>
+                  <span class="status <%= application.status.toLowerCase() %>"><%= application.status %></span>
+                </td>
+              </tr>
+<% }) %>
+<% } else { %>
+  <tr><td colspan="5" style="text-align:center;">No applications found</td></tr>
+          <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

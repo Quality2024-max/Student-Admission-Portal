@@ -1,0 +1,81 @@
+<aside class="sidebar" id="sidebar">
+  <nav class="menu">
+    <a href="/admin/dashboard" class="menu-item active">
+      <span class="menu-icon">📊</span>
+      <span>Dashboard</span>
+    </a>
+
+    <a href="/admin/application" class="menu-item">
+      <span class="menu-icon">📄</span>
+      <span>Applications</span>
+    </a>
+
+    <a href="/admin/admission" class="menu-item">
+      <span class="menu-icon">📑</span>
+      <span>Admission</span>
+    </a>
+
+    <a href="/admin/student" class="menu-item">
+      <span class="menu-icon">🧑</span>
+      <span>Students</span>
+    </a>
+
+    <a href="/admin/fees" class="menu-item">
+      <span class="menu-icon">💰</span>
+      <span>Fees</span>
+    </a>
+
+    <a href="/admin/report" class="menu-item">
+      <span class="menu-icon">📈</span>
+      <span>Reports</span>
+    </a>
+
+    <a href="/admin/setting" class="menu-item">
+      <span class="menu-icon">⚙️</span>
+      <span>Settings</span>
+    </a>
+
+    <a href="/logout" class="menu-item logout" id="logoutBtn">
+      <span class="menu-icon">🚪</span>
+      <span>Logout</span>
+    </a>
+  </nav>
+
+  <script>
+    /* =========================================
+           MOBILE SIDEBAR
+        ========================================= */
+
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    const sidebar = document.getElementById("sidebar");
+
+    mobileMenu.addEventListener("click", () => {
+      sidebar.classList.toggle("show");
+    });
+
+    /* =========================================
+   ACTIVE SIDEBAR MENU
+========================================= */
+
+    const currentPath = window.location.pathname;
+    const menuItems = document.querySelectorAll(".menu-item");
+
+    menuItems.forEach((item) => {
+      const href = item.getAttribute("href");
+
+      // Pehle sabse active remove
+      item.classList.remove("active");
+
+      // # links ignore
+      if (!href || href === "#") {
+        return;
+      }
+
+      // Current page ke URL se match
+      if (currentPath === href) {
+        item.classList.add("active");
+      }
+    });
+  </script>
+</aside>

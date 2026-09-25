@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= title %> | Student Admin Panel</title>
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/message.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+
+    <link rel="stylesheet" href="/css/admin-pages.css" />
+  </head>
+
+  <body>
+    <%- include('../partials/messages') %>
+    <!-- ================= HEADER ================= -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="top-header">
+      <div style="display: flex; align-items: center">
+        <button class="mobile-menu" id="mobileMenu">☰</button>
+
+        <div class="brand">
+          <span class="brand-icon">🎓</span>
+          <span>Student Admission Portal</span>
+        </div>
+      </div>
+
+      <div class="profile">
+        <span
+          ><%= user.name.charAt(0).toUpperCase() + user.name.slice(1) %></span
+        >
+        <span class="profile-icon">♟</span>
+      </div>
+    </header>
+  </body>
+</html>

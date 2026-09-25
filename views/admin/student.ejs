@@ -1,0 +1,177 @@
+ <%- include('../partials/header') %> <%- include('../partials/navbar') %>
+
+
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Students</h1>
+      <p>Manage student profiles and academic records.</p>
+    </div>
+    <button class="btn-primary" data-modal="studentModal">+ Add Student</button>
+  </div>
+
+  <section class="card">
+    <div class="toolbar">
+      <div class="search">
+        <input id="tableSearch" placeholder="Search name, roll, contact..." />
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Roll No.</th>
+            <th>Student</th>
+            <th>Course / Semester</th>
+            <th>Contact</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="dataTable">
+          <% if (students && students.length > 0) { %>
+            <% students.forEach(student => { %>
+              <tr>
+                <td><%= student.roll %></td>
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= student.name.substring(0, 2).toUpperCase() %></div>
+                    <div class="student-info">
+                      <span class="student-name"><%= student.name %></span>
+                    </div>
+                  </div>
+                </td>
+                <td><%= student.course %> / <%= student.semester %></td>
+                <td><%= student.contact %></td>
+                <td><span class="status <%= student.status.toLowerCase().replace(' ', '-') %>"><%= student.status %></span></td>
+                <td>
+                  <div class="actions">
+                    <button class="action" title="Edit" data-modal="editStudent-<%= student.id %>">✏️</button>
+                    <form class="delete-form" action="/admin/student/<%= student.id %>" method="POST" style="display:inline;">
+                      <input type="hidden" name="_method" value="DELETE" />
+                      <button class="action delete" title="Delete">🗑</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="6" style="text-align:center;">No students found</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-row">
+      <span>Showing <%= students ? students.length : 0 %> records</span>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== CREATE MODAL ===================== -->
+<div class="modal-overlay" id="studentModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Add Student</h2>
+      <button class="close">×</button>
+    </div>
+    <form action="/admin/student" method="POST">
+      <div class="modal-body">
+        <div class="section-title">Student Information</div>
+        <div class="grid">
+          <div class="field full">
+            <label>Confirmed Admission *</label>
+            <select name="admission_id" required>
+              <option value="">Select an admission</option>
+              <% (availableAdmissions || []).forEach(a => { %>
+                <option value="<%= a.id %>"><%= a.admission_no %> - <%= a.course %> / <%= a.semester %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="field">
+            <label>Full Name *</label><input name="name" required />
+          </div>
+          <div class="field">
+            <label>Contact *</label><input name="contact" maxlength="15" required />
+          </div>
+          <div class="field">
+            <label>Course *</label>
+            <select name="course" required>
+              <option value="">Select Course</option>
+              <option>MCA</option>
+              <option>BCA</option>
+              <option>MBA</option>
+              <option>B.Tech</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Semester *</label><input name="semester" placeholder="e.g. Semester 1" required />
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              <option>Active</option>
+              <option>On Hold</option>
+              <option>Graduated</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+        <button class="btn-primary">Save Student</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== EDIT MODALS (one per row) ===================== -->
+<% if (students && students.length > 0) { %>
+  <% students.forEach(student => { %>
+    <div class="modal-overlay" id="editStudent-<%= student.id %>">
+      <div class="modal">
+        <div class="modal-head">
+          <h2>Edit Student - <%= student.roll %></h2>
+          <button class="close">×</button>
+        </div>
+        <form action="/admin/student/<%= student.id %>" method="POST">
+          <input type="hidden" name="_method" value="PUT" />
+          <div class="modal-body">
+            <div class="grid">
+              <div class="field">
+                <label>Full Name *</label><input name="name" value="<%= student.name %>" required />
+              </div>
+              <div class="field">
+                <label>Contact *</label><input name="contact" value="<%= student.contact %>" required />
+              </div>
+              <div class="field">
+                <label>Course *</label>
+                <select name="course" required>
+                  <% ['MCA','BCA','MBA','B.Tech'].forEach(c => { %>
+                    <option <%= student.course === c ? 'selected' : '' %>><%= c %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="field">
+                <label>Semester *</label><input name="semester" value="<%= student.semester %>" required />
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <select name="status">
+                  <% ['Active','On Hold','Graduated'].forEach(s => { %>
+                    <option <%= student.status === s ? 'selected' : '' %>><%= s %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary close">Cancel</button>
+            <button class="btn-primary">Update Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+<% } %>
+
+<%- include('../partials/footer') %>

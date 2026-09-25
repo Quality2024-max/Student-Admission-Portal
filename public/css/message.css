@@ -1,0 +1,271 @@
+/* =========================================================
+   FLASH MESSAGE
+========================================================= */
+
+.flash-container {
+  position: fixed;
+
+  top: 80px;
+  right: 25px;
+
+  width: min(420px, calc(100% - 30px));
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  z-index: 99999;
+}
+
+/* =========================================================
+   FLASH BOX
+========================================================= */
+
+.flash-message {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  min-height: 74px;
+
+  padding: 14px 45px 14px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.1),
+    0 4px 10px rgba(0, 0, 0, 0.05);
+
+  overflow: hidden;
+
+  animation: slideIn 0.45s ease forwards;
+}
+
+/* =========================================================
+   FLASH ICON
+========================================================= */
+
+.flash-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 21px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   FLASH CONTENT
+========================================================= */
+
+.flash-content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  line-height: 1.4;
+
+  min-width: 0;
+}
+
+.flash-content strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.flash-content span {
+  font-size: 14px;
+  color: #4b5563;
+
+  word-break: break-word;
+}
+
+/* =========================================================
+   FLASH CLOSE BUTTON
+========================================================= */
+
+.flash-close {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #6b7280;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.flash-close:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* =========================================================
+   FLASH PROGRESS
+========================================================= */
+
+.flash-progress {
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+
+  height: 3px;
+  width: 100%;
+
+  animation: progress 5s linear forwards;
+}
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.flash-message.success {
+  border-left: 4px solid #16a34a;
+}
+
+.flash-message.success .flash-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.flash-message.success strong {
+  color: #15803d;
+}
+
+.flash-message.success .flash-progress {
+  background: #16a34a;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.flash-message.error {
+  border-left: 4px solid #dc2626;
+}
+
+.flash-message.error .flash-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.flash-message.error strong {
+  color: #dc2626;
+}
+
+.flash-message.error .flash-progress {
+  background: #dc2626;
+}
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.flash-message.warning {
+  border-left: 4px solid #d97706;
+}
+
+.flash-message.warning .flash-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.flash-message.warning strong {
+  color: #b45309;
+}
+
+.flash-message.warning .flash-progress {
+  background: #d97706;
+}
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.flash-message.info {
+  border-left: 4px solid #2563eb;
+}
+
+.flash-message.info .flash-icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.flash-message.info strong {
+  color: #2563eb;
+}
+
+.flash-message.info .flash-progress {
+  background: #2563eb;
+}
+
+/* =========================================================
+   FLASH ANIMATION
+========================================================= */
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(110%);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}

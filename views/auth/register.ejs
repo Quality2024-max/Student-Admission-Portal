@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title  %></title>
+  <link rel="stylesheet" href="/css/create.css" />
+</head>
+<body>
+  
+<%- include('../partials/messages') %>
+<main class="register-page">
+  <!-- LEFT SIDE -->
+  <section class="register-info">
+    <div class="brand">
+      <div class="brand-logo">S</div>
+      <span>SAP</span>
+    </div>
+
+    <div class="info-content">
+      <span class="badge">JOIN US TODAY</span>
+
+      <h1>
+        Create your
+        <span>Account</span>
+      </h1>
+
+      <p>
+        Create your account and get access to all the features, tools and
+        services available on YourApp.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <div>
+            <strong>Simple & Easy</strong>
+            <small>Create your account in seconds</small>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div>
+            <strong>Quick Access</strong>
+            <small>Access your account anytime</small>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🛡</div>
+          <div>
+            <strong>Secure & Private</strong>
+            <small>Your information stays protected</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright">© 2026 YourApp. All rights reserved.</div>
+  </section>
+
+  <!-- RIGHT SIDE -->
+  <section class="register-section">
+    <div class="register-card">
+      <!-- Mobile Brand -->
+      <div class="mobile-brand">
+        <div class="brand-logo">S</div>
+        <span>SAP</span>
+      </div>
+
+      <!-- Header -->
+      <div class="register-header">
+        <h2>Create Account</h2>
+        <p>Fill in your details to create your account.</p>
+      </div>
+
+      <!-- FORM -->
+      <form action="/register" method="POST" class="register-form">
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="name"> Full Name </label>
+
+          <div class="input-box">
+            <span class="input-icon">👤</span>
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email"> Email Address </label>
+
+          <div class="input-box">
+            <span class="input-icon">✉</span>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password Row -->
+        <div class="password-row">
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password"> Password </label>
+
+            <div class="input-box">
+              <span class="input-icon">🔒</span>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create password"
+                autocomplete="new-password"
+                required
+              />
+
+              <button type="button" class="show-password" id="togglePassword">
+                👁
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword"> Confirm Password </label>
+
+            <div class="input-box">
+              <span class="input-icon">🔐</span>
+
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm password"
+                autocomplete="new-password"
+                required
+              />
+
+              <button
+                type="button"
+                class="show-password"
+                id="toggleConfirmPassword"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <label class="terms">
+          <input type="checkbox" name="terms" required />
+
+          <span>
+            I agree to the
+            <a href="#">Terms & Conditions</a>
+            and
+            <a href="#">Privacy Policy</a>.
+          </span>
+        </label>
+
+        <!-- Submit -->
+        <button type="submit" class="register-btn">
+          <span>Create Account</span>
+          <span class="arrow">→</span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <!-- Google -->
+      <button type="button" class="social-btn">
+        <span class="google">G</span>
+        Sign up with Google
+      </button>
+
+      <!-- Login -->
+      <p class="login-text">
+        Already have an account?
+        <a href="/login">login</a>
+      </p>
+    </div>
+  </section>
+</main>
+<script>
+  // Password
+  const password = document.getElementById("password");
+
+  const togglePassword = document.getElementById("togglePassword");
+
+  togglePassword.addEventListener("click", () => {
+    if (password.type === "password") {
+      password.type = "text";
+      togglePassword.textContent = "🙈";
+    } else {
+      password.type = "password";
+      togglePassword.textContent = "👁";
+    }
+  });
+
+  // Confirm Password
+  const confirmPassword = document.getElementById("confirmPassword");
+
+  const toggleConfirmPassword = document.getElementById(
+    "toggleConfirmPassword",
+  );
+
+  toggleConfirmPassword.addEventListener("click", () => {
+    if (confirmPassword.type === "password") {
+      confirmPassword.type = "text";
+      toggleConfirmPassword.textContent = "🙈";
+    } else {
+      confirmPassword.type = "password";
+      toggleConfirmPassword.textContent = "👁";
+    }
+  });
+</script>
+</body>
+</html>

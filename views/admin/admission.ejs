@@ -1,0 +1,396 @@
+<%- include('../partials/header') %> <%- include('../partials/navbar') %>
+
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Admission</h1>
+      <p>Create and manage confirmed admission records.</p>
+    </div>
+
+    <button class="btn-primary" data-modal="admissionModal">
+      + Add Admission
+    </button>
+  </div>
+
+  <!-- ===================== ADMISSION TABLE ===================== -->
+
+  <section class="card">
+    <div class="toolbar">
+      <div class="search">
+        <input
+          id="tableSearch"
+          placeholder="Search admission no., applicant..."
+        />
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Admission No.</th>
+            <th>Applicant</th>
+            <th>Course / Semester</th>
+            <th>Admission Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="dataTable">
+      <% if (admissions && admissions.length > 0) { %>
+        <% admissions.forEach(admission => { %>
+
+           <tr>
+                <td><%= admission.admission_no %></td>
+                <td>
+                  <div class="student">
+                    <div class="avatar"><%= admission.applicant_name.substring(0, 2).toUpperCase() %></div>
+                    <div class="student-info">
+                      <span class="student-name"><%= admission.applicant_name %></span>
+                      <span class="muted"><%= admission.applicant_email || '-' %></span>
+                    </div>
+                  </div>
+                </td>
+                <td><%= admission.course %> <% if (admission.semester) { %>/ <%= admission.semester %><% } %></td>
+                <td>
+                  <%= admission.admission_date ? new Date(admission.admission_date).toLocaleDateString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                  }) : '-' %>
+                </td>
+                <td><span class="status <%= admission.status.toLowerCase() %>"><%= admission.status %></span></td>
+                <td>
+                  <div class="actions">
+                    <button class="action" title="Edit" data-modal="editAdmission-<%= admission.id %>">✏️</button>
+                    <form class="delete-form" action="/admin/admission/<%= admission.id %>" method="POST" style="display:inline;">
+                      <input type="hidden" name="_method" value="DELETE" />
+                      <button class="action delete" title="Delete">🗑</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+         <% }) %>
+        <% } else { %>
+           <tr><td colspan="6" style="text-align:center;">No admissions found</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-row">
+      <span> Showing <%= admissions ? admissions.length : 0 %> admissions </span>
+    </div>
+  </section>
+</main>
+
+<!-- =====================================================
+     CREATE ADMISSION MODAL
+===================================================== -->
+
+<div class="modal-overlay" id="admissionModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Add Admission</h2>
+
+      <button class="close">×</button>
+    </div>
+
+    <form action="/admin/admission" method="POST">
+      <div class="modal-body">
+        <div class="section-title">Admission Details</div>
+
+        <div class="grid">
+          <!-- APPLICATION -->
+
+          <div class="field full">
+            <label> Approved Application * </label>
+
+                 <select name="application_id" required>
+              <option value="">Select an approved application</option>
+              <% (applications || []).forEach(app => { %>
+                <option value="<%= app.id %>">
+                  <%= app.application_no %> - <%= app.name %> (<%= app.course %>)
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- COURSE -->
+
+          <div class="field">
+            <label> Course * </label>
+
+            <select name="course" required>
+              <option value="">Select</option>
+
+              <option>MCA</option>
+
+              <option>BCA</option>
+
+              <option>MBA</option>
+
+              <option>B.Tech</option>
+            </select>
+          </div>
+
+          <!-- SEMESTER -->
+
+          <div class="field">
+            <label> Semester </label>
+
+            <input name="semester" placeholder="e.g. Semester 1" />
+          </div>
+
+          <!-- ADMISSION DATE -->
+
+          <div class="field">
+            <label> Admission Date * </label>
+
+            <input type="date" name="admission_date" required />
+          </div>
+
+          <!-- STATUS -->
+
+          <div class="field">
+            <label> Status </label>
+
+            <select name="status">
+              <option>Confirmed</option>
+
+              <option>Cancelled</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+
+        <button class="btn-primary">Save Admission</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =====================================================
+     EDIT ADMISSION 1
+===================================================== -->
+
+<% if (admissions && admissions.length > 0) { %>
+  <% admissions.forEach(admission => { %>
+
+<div class="modal-overlay" id="editAdmission-<%= admission.id %>">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Edit Admission - <%= admission.admission_no %></h2>
+
+      <button class="close">×</button>
+    </div>
+
+    <form action="/admin/admission/<%= admission.id %>" method="POST">
+      <input type="hidden" name="_method" value="PUT" />
+
+      <div class="modal-body">
+        <div class="grid">
+          <!-- COURSE -->
+
+          <div class="field">
+            <label> Course * </label>
+
+        <select name="course" required>
+                  <% ['MCA','BCA','MBA','B.Tech'].forEach(c => { %>
+                    <option <%= admission.course === c ? 'selected' : '' %>><%= c %></option>
+                  <% }) %>
+                </select>
+          </div>
+
+          <!-- SEMESTER -->
+
+          <div class="field">
+            <label> Semester </label>
+
+            <input name="semester" value="<%= admission.semester || '' %>" />
+          </div>
+
+          <!-- DATE -->
+
+          <div class="field">
+            <label> Admission Date * </label>
+
+            <input
+  type="date"
+  name="admission_date"
+  value="<%= admission.admission_date ? new Date(admission.admission_date).toISOString().split('T')[0] : '' %>"
+  required
+/>
+          </div>
+
+          <!-- STATUS -->
+
+          <div class="field">
+            <label> Status </label>
+
+            <select name="status">
+                  <% ['Confirmed','Cancelled'].forEach(s => { %>
+                    <option <%= admission.status === s ? 'selected' : '' %>><%= s %></option>
+                  <% }) %>
+                </select>
+          </div>
+
+           <input type="hidden" name="application_id" value="<%= admission.application_id %>" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+
+        <button class="btn-primary">Update Admission</button>
+      </div>
+    </form>
+  </div>
+</div>
+  <% }) %>
+<% } %>
+<!-- =====================================================
+     EDIT ADMISSION 2
+===================================================== -->
+
+<div class="modal-overlay" id="editAdmission-2">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Edit Admission - ADM002</h2>
+
+      <button class="close">×</button>
+    </div>
+
+    <form action="/admin/admission/2" method="POST">
+      <input type="hidden" name="_method" value="PUT" />
+
+      <div class="modal-body">
+        <div class="grid">
+          <div class="field">
+            <label> Course * </label>
+
+            <select name="course" required>
+              <option>MCA</option>
+
+              <option selected>BCA</option>
+
+              <option>MBA</option>
+
+              <option>B.Tech</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label> Semester </label>
+
+            <input name="semester" value="Semester 2" />
+          </div>
+
+          <div class="field">
+            <label> Admission Date * </label>
+
+            <input
+              type="date"
+              name="admission_date"
+              value="2026-09-08"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label> Status </label>
+
+            <select name="status">
+              <option selected>Confirmed</option>
+
+              <option>Cancelled</option>
+            </select>
+          </div>
+
+          <input type="hidden" name="application_id" value="2" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+
+        <button class="btn-primary">Update Admission</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =====================================================
+     EDIT ADMISSION 3
+===================================================== -->
+
+<div class="modal-overlay" id="editAdmission-3">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Edit Admission - ADM003</h2>
+
+      <button class="close">×</button>
+    </div>
+
+    <form action="/admin/admission/3" method="POST">
+      <input type="hidden" name="_method" value="PUT" />
+
+      <div class="modal-body">
+        <div class="grid">
+          <div class="field">
+            <label> Course * </label>
+
+            <select name="course" required>
+              <option>MCA</option>
+
+              <option>BCA</option>
+
+              <option selected>MBA</option>
+
+              <option>B.Tech</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label> Semester </label>
+
+            <input name="semester" value="Semester 1" />
+          </div>
+
+          <div class="field">
+            <label> Admission Date * </label>
+
+            <input
+              type="date"
+              name="admission_date"
+              value="2026-09-07"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label> Status </label>
+
+            <select name="status">
+              <option>Confirmed</option>
+
+              <option selected>Cancelled</option>
+            </select>
+          </div>
+
+          <input type="hidden" name="application_id" value="3" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close">Cancel</button>
+
+        <button class="btn-primary">Update Admission</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
