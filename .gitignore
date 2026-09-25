@@ -1,2 +1,5 @@
 node_modules/
 .env
+ca.pem
+collage_admission_db.sql
+database.sql
